@@ -78,7 +78,8 @@ BEGIN_MESSAGE_MAP(CAegisSPIDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_WORD_WRITE, &CAegisSPIDlg::OnBnClickedButtonWordWrite)
 	ON_BN_CLICKED(IDC_BUTTON_CONNECT, &CAegisSPIDlg::OnBnClickedButtonConnect)
 	ON_BN_CLICKED(IDC_BUTTON_WORD_READ, &CAegisSPIDlg::OnBnClickedButtonWordRead)
-	ON_BN_CLICKED(IDC_BUTTON_LOOPTEST, &CAegisSPIDlg::OnBnClickedButtonLooptest)
+	ON_BN_CLICKED(IDC_BUTTON_LOOP, &CAegisSPIDlg::OnBnClickedButtonLoop)
+	ON_BN_CLICKED(IDC_BUTTON_LOOPBURST, &CAegisSPIDlg::OnBnClickedButtonLoopburst)
 END_MESSAGE_MAP()
 
 
@@ -221,7 +222,8 @@ void CAegisSPIDlg::OnBnClickedButtonWordRead()
 }
 
 
-void CAegisSPIDlg::OnBnClickedButtonLooptest()
+
+void CAegisSPIDlg::OnBnClickedButtonLoop()
 {
 	uint8 tx_buffer[8] = {0, };
 	uint8 rx_buffer[8] = {0, };
@@ -229,7 +231,6 @@ void CAegisSPIDlg::OnBnClickedButtonLooptest()
 	// EDIT value 
 	Utils::Convert_Str2Hex(m_sAddr, &tx_buffer[0]);
 	Utils::Convert_Str2Hex(m_sAddr, &tx_buffer[4]);
-	tx_buffer[0] &= ~(0x80);	// Read Cmd
 
 	// SPI Write/Read
 	mobjCommSPI.WriteReadData(tx_buffer, rx_buffer, 8);
@@ -238,5 +239,32 @@ void CAegisSPIDlg::OnBnClickedButtonLooptest()
 
 	// Display EDIT window
 	CString sData = Utils::Convert_Hex2Str(nData);
-	((CEdit *)GetDlgItem(IDC_EDIT_DATA))->SetWindowText(sData);
+	((CEdit *)GetDlgItem(IDC_EDIT_DATA))->SetWindowText(sData);	
+}
+
+
+void CAegisSPIDlg::OnBnClickedButtonLoopburst()
+{
+	uint8 tx_buffer[200] = {0, };
+	uint8 rx_buffer[200] = {0, };
+
+	// EDIT value 
+	Utils::Convert_Str2Hex(m_sAddr, &tx_buffer[0]);
+
+	for (uint32 i=0; i<((200-4)/4); i++)
+	{
+		tx_buffer[4+i*4] = tx_buffer[0];
+		tx_buffer[5+i*4] = tx_buffer[1];
+		tx_buffer[6+i*4] = tx_buffer[2];
+		tx_buffer[7+i*4] = tx_buffer[3];
+	}
+
+	// SPI Write/Read
+	mobjCommSPI.WriteReadData(tx_buffer, rx_buffer, 200);
+		// rx_buffer[4..7] valid
+	uint32 nData = rx_buffer[200-4]<<24 | rx_buffer[200-3]<<16 | rx_buffer[200-2]<<8 | rx_buffer[200-1]<<0;
+
+	// Display EDIT window
+	CString sData = Utils::Convert_Hex2Str(nData);
+	((CEdit *)GetDlgItem(IDC_EDIT_DATA))->SetWindowText(sData);	
 }

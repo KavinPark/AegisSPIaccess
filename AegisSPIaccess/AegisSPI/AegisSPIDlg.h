@@ -44,5 +44,6 @@ public:
 	afx_msg void OnBnClickedButtonWordWrite();
 	afx_msg void OnBnClickedButtonConnect();
 	afx_msg void OnBnClickedButtonWordRead();
-	afx_msg void OnBnClickedButtonLooptest();
+	afx_msg void OnBnClickedButtonLoop();
+	afx_msg void OnBnClickedButtonLoopburst();
 };
