@@ -228,7 +228,6 @@ void CAegisSPIDlg::OnBnClickedButtonLooptest()
 	// EDIT value 
 	Utils::Convert_Str2Hex(m_sAddr, &tx_buffer[0]);
 	Utils::Convert_Str2Hex(m_sAddr, &tx_buffer[4]);
-	tx_buffer[0] &= ~(0x80);	// Read Cmd
 
 	// SPI Write/Read
 	mobjCommSPI.SendReceiveData(8, tx_buffer, 8, rx_buffer, 4);
