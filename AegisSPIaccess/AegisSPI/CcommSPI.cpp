@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "CcommSPI.h"
-#include "ftd2xx.h"
 #include "libMPSSE_spi.h"
 
 
@@ -22,6 +21,7 @@ CcommSPI::Open(void)
 
 	FT_STATUS status;
 
+
 	// Check how many MPSSE channels are available
 /*
 	uint32 channelCount = 0;
@@ -37,17 +37,21 @@ CcommSPI::Open(void)
 	if (status != FT_OK)
 		SPIFailExit("Error while OpenChannel.");
 
-//	status = FT_ResetDevice(mobjSPIhandle);
-
 	// Init the channel (configure it)
 	_ConstchannelConfig.ClockRate = 1000000;	// 1000KHz
 	_ConstchannelConfig.configOptions = SPI_CONFIG_OPTION_MODE0 | SPI_CONFIG_OPTION_CS_DBUS3 | SPI_CONFIG_OPTION_CS_ACTIVELOW;
 	_ConstchannelConfig.LatencyTimer = 2;
-	_ConstchannelConfig.Pin = 0;	// All Input But SPI pins are Overwritten Automatically
+	_ConstchannelConfig.Pin = 0xb;	// All Input But SPI pins are Overwritten Automatically
 
 	_ConstTransOptions = SPI_TRANSFER_OPTIONS_SIZE_IN_BYTES | SPI_TRANSFER_OPTIONS_CHIPSELECT_ENABLE | SPI_TRANSFER_OPTIONS_CHIPSELECT_DISABLE;
 
 	status = SPI_InitChannel(mobjSPIhandle, &_ConstchannelConfig);
+	if (status != FT_OK)
+		SPIFailExit("Error while Initializing.");
+
+	// Pin Initial State
+	// bit Position : bit3:CS, bit2:MISO, bit1:MOSI, bit0:SCK
+	status = FT_WriteGPIO(mobjSPIhandle, /*dir*/0x0b, /*value*/0x08);	 
 	if (status != FT_OK)
 		SPIFailExit("Error while Initializing.");
 

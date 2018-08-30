@@ -1,7 +1,6 @@
 
 #pragma once
 #include "libMPSSE_spi.h"
-#include "ftd2xx.h"
 
 
 class CcommSPI

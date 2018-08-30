@@ -39,9 +39,6 @@
     <ClInclude Include="Resource.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="DeviceLib\ftd2xx.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="DeviceLib\libMPSSE_spi.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>

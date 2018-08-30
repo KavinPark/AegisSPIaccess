@@ -31,6 +31,7 @@
 
 #include "ftd2xx.h"
 
+// Reference : <AN_178..>
 
 /******************************************************************************/
 /*								Macro defines								  */
@@ -55,13 +56,13 @@
 
 
 
-
+// Reference : <AN_178> p.15
 /* Bit defination of the Options member of configOptions structure*/
 #define SPI_CONFIG_OPTION_MODE_MASK		0x00000003
-#define SPI_CONFIG_OPTION_MODE0			0x00000000
-#define SPI_CONFIG_OPTION_MODE1			0x00000001
-#define SPI_CONFIG_OPTION_MODE2			0x00000002
-#define SPI_CONFIG_OPTION_MODE3			0x00000003
+#define SPI_CONFIG_OPTION_MODE0			0x00000000	// data are captured on rising edge and propagated on falling edge 
+#define SPI_CONFIG_OPTION_MODE1			0x00000001	// data are captured on falling edge and propagated on rising edge 
+#define SPI_CONFIG_OPTION_MODE2			0x00000002	//?? data are captured on falling edge and propagated on rising edge 
+#define SPI_CONFIG_OPTION_MODE3			0x00000003	//?? data are captured on rising edge and propagated on falling edge 
 
 #define SPI_CONFIG_OPTION_CS_MASK			0x0000001C		/*111 00*/
 #define SPI_CONFIG_OPTION_CS_DBUS3		0x00000000		/*000 00*/
