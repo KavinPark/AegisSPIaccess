@@ -49,11 +49,13 @@ CcommSPI::Open(void)
 	if (status != FT_OK)
 		SPIFailExit("Error while Initializing.");
 
-	// Pin Initial State
-	// bit Position : bit3:CS, bit2:MISO, bit1:MOSI, bit0:SCK
-	status = FT_WriteGPIO(mobjSPIhandle, /*dir*/0x0b, /*value*/0x08);	 
-	if (status != FT_OK)
-		SPIFailExit("Error while Initializing.");
+// Pin Initial State
+	{
+		uint8 TxBufDummy[8];
+		uint8 RxBufDummy[8];
+		memset(TxBufDummy, 0, 8);
+		WriteReadData(TxBufDummy, RxBufDummy, 8);
+	}
 
 	return FT_OK;
 }
