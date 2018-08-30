@@ -38,7 +38,7 @@ CcommSPI::Open(void)
 		SPIFailExit("Error while OpenChannel.");
 
 	// Init the channel (configure it)
-	_ConstchannelConfig.ClockRate = 1000000;	// 1000KHz
+	_ConstchannelConfig.ClockRate = 3000000;	// 3000000=>500KHz  1000000=>200KHz
 	_ConstchannelConfig.configOptions = SPI_CONFIG_OPTION_MODE0 | SPI_CONFIG_OPTION_CS_DBUS3 | SPI_CONFIG_OPTION_CS_ACTIVELOW;
 	_ConstchannelConfig.LatencyTimer = 2;
 	_ConstchannelConfig.Pin = 0xb;	// All Input But SPI pins are Overwritten Automatically
