@@ -108,7 +108,6 @@
     <ClInclude Include="AegisSPIDlg.h" />
     <ClInclude Include="CcommSPI.h" />
     <ClInclude Include="DeviceLib\ftd2xx.h" />
-    <ClInclude Include="DeviceLib\libMPSSE_spi.h" />
     <ClInclude Include="DeviceLib\WinTypes.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />

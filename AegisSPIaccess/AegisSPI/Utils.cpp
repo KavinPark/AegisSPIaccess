@@ -1,9 +1,9 @@
 
 #include "StdAfx.h"
 #include "Utils.h"
-#include "libMPSSE_spi.h"
 #include "ftd2xx.h"
 
+static Utils s_objUtils;
 
 Utils::Utils(void)
 {

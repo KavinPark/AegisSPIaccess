@@ -7,7 +7,6 @@
 #include "AegisSPIDlg.h"
 #include "afxdialogex.h"
 
-#include "libMPSSE_spi.h"
 #include "ftd2xx.h"
 #include "Utils.h"
 
@@ -196,7 +195,7 @@ void CAegisSPIDlg::OnBnClickedButtonWordWrite()
 	tx_buffer[0] |= 0x80;	// Write Cmd
 
 	// SPI Send
-	mobjCommSPI.WriteData(tx_buffer, 8);
+	mobjCommSPI.WriteRegisterData(tx_buffer, &tx_buffer[4]);
 }
 
 
@@ -211,7 +210,7 @@ void CAegisSPIDlg::OnBnClickedButtonWordRead()
 	tx_buffer[0] &= ~(0x80);	// Read Cmd
 
 	// SPI Write/Read
-	mobjCommSPI.WriteReadData(tx_buffer, rx_buffer, 8);
+	mobjCommSPI.ReadRegisterData(tx_buffer, rx_buffer);
 		// rx_buffer[4..7] valid
 	uint32 nData = rx_buffer[4]<<24 | rx_buffer[5]<<16 | rx_buffer[6]<<8 | rx_buffer[7]<<0;
 
@@ -232,11 +231,12 @@ void CAegisSPIDlg::OnBnClickedButtonLooptest()
 	tx_buffer[0] &= ~(0x80);	// Read Cmd
 
 	// SPI Write/Read
-	mobjCommSPI.WriteReadData(tx_buffer, rx_buffer, 8);
+	mobjCommSPI.SendReceiveData(8, tx_buffer, 8, rx_buffer, 4);
 		// rx_buffer[4..7] valid
-	uint32 nData = rx_buffer[4]<<24 | rx_buffer[5]<<16 | rx_buffer[6]<<8 | rx_buffer[7]<<0;
+	uint32 nData = rx_buffer[0]<<24 | rx_buffer[1]<<16 | rx_buffer[2]<<8 | rx_buffer[3]<<0;
 
 	// Display EDIT window
 	CString sData = Utils::Convert_Hex2Str(nData);
 	((CEdit *)GetDlgItem(IDC_EDIT_DATA))->SetWindowText(sData);
 }
+
